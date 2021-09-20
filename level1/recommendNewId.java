@@ -13,30 +13,116 @@ public class getNewId {
 
         System.out.println(recommendId);
     }
+    
+    
     public static String solution(String  new_id){
-        // 1. length >= 3 && length <= 15
-        // 2. [a-z], '-','_','.' 사용 가능
-        // 3. . : [0],[length] 사용 불가. 연속사용 불가
 
-        final String CAPITAL = "[A-Z]";
-        String[] new_id_arr = new_id.split("");
-        // 1. uppercase->lowercase
-        for (int i = 0; i < new_id_arr.length; i++){
-            if(Pattern.matches(new_id_arr[i],CAPITAL)){
-                new_id_arr[i] = new_id_arr[i].toLowerCase();
+        //1단계
+        String[] new_id_arr = new_id.toLowerCase().split("");
+        String CAPITAL = "[a-z\\d\\_\\-\\.]";
+        //2단계
+        for (int i = 0; i< new_id_arr.length;i++){
+            if (!Pattern.matches(CAPITAL,new_id_arr[i])){
+                new_id_arr[i] = "";
             }
         }
-        // 치환 완료된 arr -> String
         new_id = Arrays.stream(new_id_arr).collect(Collectors.joining());
 
-        // 2. [a-z],\d,'-','_','.' 제외 모든 문자 제거
-        // 3. .. -> .
-        // 4. ".".equals(new_id_arr[0]) || ".".equals(new_id_arr[new_id_arr.length]) -> replace(".","")
-        // 5. 빈 문자열일 경우 a 대입
-        // 6. new_id.length > 15 -> new_id = new_id.split("") -> 15
-        // 7. new_id < 3 new_id[n+1] = new_id[n]
+        //3단계
+        boolean flag = true;
+
+        while(flag){
+
+            if(new_id.indexOf("..")>-1) {
+                new_id = new_id.replace("..",".");
+                flag = true;
+            }else{
+                flag = false;
+            }
+
+        }
+        System.out.println(new_id);
+        //4단계
+        flag = true;
+        while(flag){
+
+            if(new_id.length() < 2){
+                if(".".equals(new_id)){
+                    new_id = "";
+                }
+                flag = false;
+            }else {
+                // 첫번째 . 제거
+                if (".".equals(new_id.substring(0, 1))) {
+                    new_id = new_id.substring(1, new_id.length());
+                } else {
+                    flag = false;
+                }
+
+            }
 
 
+            if(new_id.length() < 2){
+                if(".".equals(new_id)){
+                    new_id = "";
+                }
+                flag = false;
+            }else{
+
+                // 마지막 . 제거
+                if(".".equals(new_id.substring(new_id.length()-1,new_id.length()))){
+                    System.out.println("test");
+                    new_id = new_id.substring(0,new_id.length()-1);
+                    flag = true;
+                }else{
+                    flag = false;
+                }
+            }
+
+
+        }
+        //5단계
+        if("".equals(new_id.trim())){
+            new_id = "a";
+        }
+        //6단계
+        if (new_id.length() > 15){
+            new_id = new_id.substring(0,15);
+
+
+            flag = true;
+            while(flag){
+                if(".".equals(new_id.substring(new_id.length()-1,new_id.length()))) {
+                    new_id = new_id.substring(0,new_id.length()-1);
+                }else {
+                    flag = false;
+                }
+            }
+
+
+        }else if(new_id.length() < 3){
+            while(new_id.length() <3){
+                new_id += new_id.substring(new_id.length()-1, new_id.length());
+            }
+
+        }else{
+            flag = true;
+            while(flag){
+                if(".".equals(new_id.indexOf(new_id.length()))) {
+
+
+                    new_id = new_id.substring(0,new_id.length()-1);
+                }else {
+                    if(new_id.length() < 3){
+                        new_id += new_id.substring(new_id.length()-1, new_id.length());
+                    }else{
+                        flag = false;
+                    }
+
+                }
+            }
+        }
+        String answer = new_id;
 
         return answer;
     }
