@@ -36,9 +36,9 @@ class Solution {
                     int rightRange = rightList.indexOf(e);
 
                     if(leftRange > -1) {
-                        changeCommonHandValues(leftRange,0,"L");
+                        changeCommonHandPointer(leftRange,0,"L");
                     } else if(rightRange > -1) {
-                        changeCommonHandValues(rightRange,0,"R");
+                        changeCommonHandPointer(rightRange,0,"R");
                     } else {
                         // arr2d[n][1] 일 경우 거리/손 위치 계산
                         for (int i = 0; i < arr2d.length; i++) {
@@ -59,7 +59,7 @@ class Solution {
                                         resultHand = "L";
                                     }
                                 }
-                                changeCommonHandValues(i,1, resultHand);
+                                changeCommonHandPointer(i,1, resultHand);
                             }
                         }
                     }
@@ -72,7 +72,7 @@ class Solution {
     }
 
     // 왼손의 좌표값을 세팅하는 메서드
-    public void changeCommonHandValues(int x, int y, String hand) {
+    public void changeCommonHandPointer(int x, int y, String hand) {
         if(hand.equals("R")){
             changeRightHandPointer(x,y);
         }else{
